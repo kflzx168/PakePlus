@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>英语单词闯关 | 四年级上下册 + 拼写练习</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #F8F3E9 0%, #FFF9EF 100%);
+            font-family: 'Segoe UI', 'Comic Neue', 'Poppins', 'PingFang SC', Roboto, sans-serif;
+            padding: 1.2rem;
+            min-height: 100vh;
+            color: #2E241F;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #F5B042, #E07C2C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: #b97f44;
+            background: #FFF4E4;
+            display: inline-block;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+        }
+
+        .semester-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .sem-btn {
+            background: #EAD9C4;
+            border: none;
+            padding: 0.6rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 60px;
+            color: #684a2b;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .sem-btn.active {
+            background: #F5A65B;
+            color: white;
+            box-shadow: 0 6px 12px rgba(245, 166, 91, 0.3);
+        }
+
+        .unit-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            background: #FFF7EC;
+            padding: 1rem;
+            border-radius: 60px;
+        }
+
+        .unit-chip {
+            background: #f0e1cf;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #684a2b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unit-chip.active {
+            background: #F5A65B;
+            color: white;
+            box-shadow: 0 2px 8px #f5a65b80;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .quiz-btn {
+            background: #FFE0B5;
+            border: none;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #A45D2E;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .quiz-btn:hover {
+            background: #FFD59E;
+            transform: scale(0.98);
+        }
+
+        /* 练习面板 */
+        .exercise-panel {
+            background: #FFF1E0;
+            border-radius: 2rem;
+            padding: 1.4rem 1.8rem;
+            margin-bottom: 2rem;
+            border: 2px solid #FFD29E;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            border-bottom: 2px dotted #F7C886;
+            padding-bottom: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #C26A2E;
+        }
+
+        .close-exercise {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #C57E44;
+        }
+
+        .quiz-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .quiz-question {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: white;
+            padding: 0.6rem 1rem;
+            border-radius: 60px;
+            display: inline-block;
+            align-self: center;
+            color: #B45F2B;
+        }
+
+        .quiz-chinese {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin: 0.5rem 0;
+            background: #FAF0E2;
+            border-radius: 2rem;
+            padding: 0.6rem;
+        }
+
+        .quiz-input-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 0.5rem 0;
+        }
+
+        #spellInput {
+            flex: 2;
+            min-width: 180px;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            border-radius: 60px;
+            border: 2px solid #EBC185;
+            background: white;
+            font-family: monospace;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        #checkBtn, #nextWordBtn {
+            background: #F5A65B;
+            border: none;
+            padding: 0 1.6rem;
+            border-radius: 60px;
+            font-weight: bold;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        #checkBtn:active, #nextWordBtn:active {
+            transform: scale(0.96);
+        }
+
+        .quiz-feedback {
+            background: #FCE9D8;
+            padding: 0.8rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            font-size: 1rem;
+            min-height: 70px;
+        }
+
+        .quiz-progress {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #b1602f;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.3rem;
+            margin-top: 1rem;
+        }
+
+        .word-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 1.2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
+            border: 1px solid #FFE6C2;
+        }
+
+        .word-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            border-bottom: 2px dashed #FFD9AE;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .word-en {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #E67E22;
+        }
+
+        .word-zh {
+            background: #FEF1E0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+        }
+
+        .sentence {
+            font-size: 0.9rem;
+            color: #5f4b35;
+            background: #FAF2E8;
+            padding: 8px 12px;
+            border-radius: 1.2rem;
+            margin: 12px 0;
+        }
+
+        .sound-btn {
+            background: #F5D6B3;
+            border: none;
+            border-radius: 60px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .phonetic {
+            font-size: 0.7rem;
+            color: #b67942;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.75rem;
+            color: #b28958;
+        }
+
+        @media (max-width: 650px) {
+            .word-en { font-size: 1.3rem; }
+            .quiz-chinese { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="hero">
+        <h1>📚 单词大冒险 🎧</h1>
+        <p>四年级上下册·拼写练习 | 敢于挑战 你就是单词王</p>
+    </div>
+
+    <div class="semester-tabs">
+        <button class="sem-btn" data-sem="up">🌟 四年级上册</button>
+        <button class="sem-btn" data-sem="down">🌈 四年级下册</button>
+    </div>
+
+    <div id="unitNav" class="unit-nav"></div>
+
+    <!-- 练习面板 (隐藏默认) -->
+    <div id="exercisePanel" class="exercise-panel" style="display: none;">
+        <div class="exercise-header">
+            <span class="exercise-title">✏️ 单元拼写闯关</span>
+            <button id="closeQuizBtn" class="close-exercise">✖ 关闭</button>
+        </div>
+        <div class="quiz-content">
+            <div class="quiz-progress" id="quizProgress">第 0 / 0 词</div>
+            <div class="quiz-question">📖 看中文 · 拼单词</div>
+            <div class="quiz-chinese" id="chineseHint">---</div>
+            <div class="quiz-input-area">
+                <input type="text" id="spellInput" placeholder="输入英文单词..." autocomplete="off">
+                <button id="checkBtn">✅ 检查</button>
+                <button id="nextWordBtn" disabled>▶ 下一词</button>
+            </div>
+            <div class="quiz-feedback" id="feedbackMsg">✨ 点击「检查」提交答案，拼写正确会得到表扬！</div>
+        </div>
+    </div>
+
+    <div id="vocabGrid" class="vocab-grid"></div>
+    <footer>
+        🎵 点击喇叭按钮听发音 | 点击“📝 单元练习”开启拼写挑战，写对表扬，写错提示“再想想”+正确答案
+    </footer>
+</div>
+
+<script>
+    // ------------------------------------------------------------
+    // 词汇库（人教版PEP四年级上下册核心词汇 内容充实）
+    // ------------------------------------------------------------
+    const vocabulary = {
+        up: {
+            "Unit 1 My classroom": [
+                { word: "classroom", meaning: "教室", phonetic: "/ˈklɑːsruːm/", sentence: "Our classroom is big and clean." },
+                { word: "window", meaning: "窗户", phonetic: "/ˈwɪndəʊ/", sentence: "Please open the window." },
+                { word: "blackboard", meaning: "黑板", phonetic: "/ˈblækbɔːd/", sentence: "The teacher writes on the blackboard." },
+                { word: "light", meaning: "电灯", phonetic: "/laɪt/", sentence: "Turn on the light, please." },
+                { word: "picture", meaning: "图画", phonetic: "/ˈpɪktʃə(r)/", sentence: "I draw a nice picture." },
+                { word: "door", meaning: "门", phonetic: "/dɔː(r)/", sentence: "Close the door after you." },
+                { word: "teacher's desk", meaning: "讲台", phonetic: "/ˈtiːtʃəz desk/", sentence: "The books are on the teacher's desk." },
+                { word: "computer", meaning: "电脑", phonetic: "/kəmˈpjuːtə(r)/", sentence: "We have a new computer." },
+                { word: "fan", meaning: "风扇", phonetic: "/fæn/", sentence: "The fan keeps us cool." },
+                { word: "wall", meaning: "墙壁", phonetic: "/wɔːl/", sentence: "There is a map on the wall." },
+                { word: "floor", meaning: "地板", phonetic: "/flɔː(r)/", sentence: "The floor is very clean." },
+                { word: "really", meaning: "真的", phonetic: "/ˈriːəli/", sentence: "Really? That’s amazing!" },
+                { word: "near", meaning: "距离近", phonetic: "/nɪə(r)/", sentence: "My home is near the school." },
+                { word: "TV", meaning: "电视机", phonetic: "/ˌtiː ˈviː/", sentence: "Let’s watch TV together." },
+                { word: "clean", meaning: "打扫", phonetic: "/kliːn/", sentence: "I clean the classroom every day." },
+                { word: "help", meaning: "帮助", phonetic: "/help/", sentence: "Can you help me?" }
+            ],
+            "Unit 2 My schoolbag": [
+                { word: "schoolbag", meaning: "书包", phonetic: "/ˈskuːlbæɡ/", sentence: "My schoolbag is heavy." },
+                { word: "maths book", meaning: "数学书", phonetic: "/mæθs bʊk/", sentence: "I put my maths book on the desk." },
+                { word: "English book", meaning: "英语书", phonetic: "/ˈɪŋɡlɪʃ bʊk/", sentence: "Read your English book every day." },
+                { word: "Chinese book", meaning: "语文书", phonetic: "/tʃaɪˈniːz bʊk/", sentence: "The Chinese book has many stories." },
+                { word: "storybook", meaning: "故事书", phonetic: "/ˈstɔːribʊk/", sentence: "I love reading a storybook before bed." },
+                { word: "candy", meaning: "糖果", phonetic: "/ˈkændi/", sentence: "Don‘t eat too much candy." },
+                { word: "notebook", meaning: "笔记本", phonetic: "/ˈnəʊtbʊk/", sentence: "Write down the new words in your notebook." },
+                { word: "toy", meaning: "玩具", phonetic: "/tɔɪ/", sentence: "My little brother has a toy car." },
+                { word: "key", meaning: "钥匙", phonetic: "/kiː/", sentence: "I lost my key." },
+                { word: "cute", meaning: "可爱的", phonetic: "/kjuːt/", sentence: "Your cat is so cute!" },
+                { word: "lost", meaning: "丢失", phonetic: "/lɒst/", sentence: "I lost my pen." },
+                { word: "so much", meaning: "非常地", phonetic: "/səʊ mʌtʃ/", sentence: "Thank you so much!" }
+            ],
+            "Unit 3 My friends": [
+                { word: "strong", meaning: "强壮的", phonetic: "/strɒŋ/", sentence: "My father is very strong." },
+                { word: "friendly", meaning: "友好的", phonetic: "/ˈfrendli/", sentence: "She is friendly to everyone." },
+                { word: "quiet", meaning: "安静的", phonetic: "/ˈkwaɪət/", sentence: "Please be quiet in the library." },
+                { word: "hair", meaning: "头发", phonetic: "/heə(r)/", sentence: "She has long black hair." },
+                { word: "shoe", meaning: "鞋", phonetic: "/ʃuː/", sentence: "I wear new shoes today." },
+                { word: "glasses", meaning: "眼镜", phonetic: "/ˈɡlɑːsɪz/", sentence: "His glasses are cool." },
+                { word: "his", meaning: "他的", phonetic: "/hɪz/", sentence: "This is his book." },
+                { word: "right", meaning: "正确的；右边", phonetic: "/raɪt/", sentence: "You are right." }
+            ],
+            "Unit 4 My home": [
+                { word: "bedroom", meaning: "卧室", phonetic: "/ˈbedruːm/", sentence: "I sleep in my bedroom." },
+                { word: "living room", meaning: "客厅", phonetic: "/ˈlɪvɪŋ ruːm/", sentence: "We watch TV in the living room." },
+                { word: "kitchen", meaning: "厨房", phonetic: "/ˈkɪtʃɪn/", sentence: "Mom cooks in the kitchen." },
+                { word: "bathroom", meaning: "浴室", phonetic: "/ˈbɑːθruːm/", sentence: "Wash your hands in the bathroom." },
+                { word: "bed", meaning: "床", phonetic: "/bed/", sentence: "My bed is soft." },
+                { word: "phone", meaning: "电话", phonetic: "/fəʊn/", sentence: "Answer the phone, please." },
+                { word: "table", meaning: "桌子", phonetic: "/ˈteɪbl/", sentence: "Put the plate on the table." },
+                { word: "fridge", meaning: "冰箱", phonetic: "/frɪdʒ/", sentence: "Milk is in the fridge." },
+                { word: "sofa", meaning: "沙发", phonetic: "/ˈsəʊfə/", sentence: "Let‘s sit on the sofa." }
+            ],
+            "Unit 5 Dinner‘s ready": [
+                { word: "beef", meaning: "牛肉", phonetic: "/biːf/", sentence: "I like beef noodles." },
+                { word: "chicken", meaning: "鸡肉", phonetic: "/ˈtʃɪkɪn/", sentence: "Chicken is delicious." },
+                { word: "noodles", meaning: "面条", phonetic: "/ˈnuːdlz/", sentence: "I eat noodles for lunch." },
+                { word: "soup", meaning: "汤", phonetic: "/suːp/", sentence: "Hot soup warms me up." },
+                { word: "vegetable", meaning: "蔬菜", phonetic: "/ˈvedʒtəbl/", sentence: "Eat more vegetables." },
+                { word: "juice", meaning: "果汁", phonetic: "/dʒuːs/", sentence: "Orange juice is my favourite." },
+                { word: "rice", meaning: "米饭", phonetic: "/raɪs/", sentence: "We have rice every day." },
+                { word: "fish", meaning: "鱼", phonetic: "/fɪʃ/", sentence: "The fish is fresh." }
+            ],
+            "Unit 6 Meet my family": [
+                { word: "parents", meaning: "父母", phonetic: "/ˈpeərənts/", sentence: "My parents love me." },
+                { word: "cousin", meaning: "表兄弟姐妹", phonetic: "/ˈkʌzn/", sentence: "I play with my cousin." },
+                { word: "uncle", meaning: "叔叔；舅舅", phonetic: "/ˈʌŋkl/", sentence: "Uncle Sam is a doctor." },
+                { word: "aunt", meaning: "阿姨；姑姑", phonetic: "/ɑːnt/", sentence: "My aunt bakes cookies." },
+                { word: "baby", meaning: "婴儿", phonetic: "/ˈbeɪbi/", sentence: "The baby is sleeping." },
+                { word: "doctor", meaning: "医生", phonetic: "/ˈdɒktə(r)/", sentence: "The doctor helps sick people." },
+                { word: "cook", meaning: "厨师；烹饪", phonetic: "/kʊk/", sentence: "My dad is a good cook." },
+                { word: "driver", meaning: "司机", phonetic: "/ˈdraɪvə(r)/", sentence: "The bus driver is friendly." },
+                { word: "farmer", meaning: "农民", phonetic: "/ˈfɑːmə(r)/", sentence: "The farmer grows vegetables." },
+                { word: "nurse", meaning: "护士", phonetic: "/nɜːs/", sentence: "The nurse gives me a shot." }
+            ]
+        },
+        down: {
+            "Unit 1 My school": [
+                { word: "library", meaning: "图书馆", phonetic: "/ˈlaɪbrəri/", sentence: "I read books in the library." },
+                { word: "playground", meaning: "操场", phonetic: "/ˈpleɪɡraʊnd/", sentence: "We run on the playground." },
+                { word: "computer room", meaning: "电脑室", phonetic: "/kəmˈpjuːtə ruːm/", sentence: "We have a new computer room." },
+                { word: "art room", meaning: "美术教室", phonetic: "/ɑːt ruːm/", sentence: "I paint in the art room." },
+                { word: "music room", meaning: "音乐教室", phonetic: "/ˈmjuːzɪk ruːm/", sentence: "Sing songs in the music room." },
+                { word: "first floor", meaning: "一楼", phonetic: "/fɜːst flɔː/", sentence: "The library is on the first floor." },
+                { word: "second floor", meaning: "二楼", phonetic: "/ˈsekənd flɔː/", sentence: "Our classroom is on the second floor." },
+                { word: "teacher‘s office", meaning: "教师办公室", phonetic: "/ˈtiːtʃəz ˈɒfɪs/", sentence: "Go to the teacher’s office." }
+            ],
+            "Unit 2 What time is it?": [
+                { word: "breakfast", meaning: "早餐", phonetic: "/ˈbrekfəst/", sentence: "I have breakfast at 7 o‘clock." },
+                { word: "lunch", meaning: "午餐", phonetic: "/lʌntʃ/", sentence: "Let's have lunch together." },
+                { word: "dinner", meaning: "晚餐", phonetic: "/ˈdɪnə(r)/", sentence: "Dinner is ready." },
+                { word: "music class", meaning: "音乐课", phonetic: "/ˈmjuːzɪk klɑːs/", sentence: "I like music class." },
+                { word: "PE class", meaning: "体育课", phonetic: "/ˌpiː ˈiː klɑːs/", sentence: "PE class is fun." },
+                { word: "go home", meaning: "回家", phonetic: "/ɡəʊ həʊm/", sentence: "It's time to go home." },
+                { word: "school", meaning: "学校", phonetic: "/skuːl/", sentence: "Welcome to our school." }
+            ],
+            "Unit 3 Weather": [
+                { word: "cold", meaning: "寒冷的", phonetic: "/kəʊld/", sentence: "It's very cold today." },
+                { word: "cool", meaning: "凉爽的", phonetic: "/kuːl/", sentence: "The weather is cool in autumn." },
+                { word: "warm", meaning: "温暖的", phonetic: "/wɔːm/", sentence: "Spring is warm." },
+                { word: "hot", meaning: "炎热的", phonetic: "/hɒt/", sentence: "It's too hot to play outside." },
+                { word: "sunny", meaning: "晴朗的", phonetic: "/ˈsʌni/", sentence: "It's sunny today." },
+                { word: "rainy", meaning: "下雨的", phonetic: "/ˈreɪni/", sentence: "I bring an umbrella on rainy days." },
+                { word: "cloudy", meaning: "多云的", phonetic: "/ˈklaʊdi/", sentence: "It's cloudy but no rain." },
+                { word: "windy", meaning: "有风的", phonetic: "/ˈwɪndi/", sentence: "It's windy, fly a kite!" }
+            ],
+            "Unit 4 At the farm": [
+                { word: "tomato", meaning: "西红柿", phonetic: "/təˈmɑːtəʊ/", sentence: "Tomatoes are red." },
+                { word: "potato", meaning: "土豆", phonetic: "/pəˈteɪtəʊ/", sentence: "I like fried potatoes." },
+                { word: "carrot", meaning: "胡萝卜", phonetic: "/ˈkærət/", sentence: "Carrots are healthy." },
+                { word: "cow", meaning: "奶牛", phonetic: "/kaʊ/", sentence: "The cow gives milk." },
+                { word: "hen", meaning: "母鸡", phonetic: "/hen/", sentence: "The hen lays eggs." },
+                { word: "sheep", meaning: "绵羊", phonetic: "/ʃiːp/", sentence: "Sheep have wool." },
+                { word: "horse", meaning: "马", phonetic: "/hɔːs/", sentence: "I can ride a horse." },
+                { word: "goat", meaning: "山羊", phonetic: "/ɡəʊt/", sentence: "The goat eats grass." }
+            ],
+            "Unit 5 My clothes": [
+                { word: "skirt", meaning: "短裙", phonetic: "/skɜːt/", sentence: "She wears a nice skirt." },
+                { word: "dress", meaning: "连衣裙", phonetic: "/dres/", sentence: "I want a new dress." },
+                { word: "pants", meaning: "裤子", phonetic: "/pænts/", sentence: "These pants are blue." },
+                { word: "hat", meaning: "帽子", phonetic: "/hæt/", sentence: "Put on your hat!" },
+                { word: "coat", meaning: "外套", phonetic: "/kəʊt/", sentence: "It's cold, wear a coat." },
+                { word: "shirt", meaning: "衬衫", phonetic: "/ʃɜːt/", sentence: "His shirt is white." },
+                { word: "sweater", meaning: "毛衣", phonetic: "/ˈswetə(r)/", sentence: "I like this red sweater." },
+                { word: "shorts", meaning: "短裤", phonetic: "/ʃɔːts/", sentence: "It's hot so I wear shorts." }
+            ],
+            "Unit 6 Shopping": [
+                { word: "glove", meaning: "手套", phonetic: "/ɡlʌv/", sentence: "Wear gloves in winter." },
+                { word: "scarf", meaning: "围巾", phonetic: "/skɑːf/", sentence: "The scarf keeps me warm." },
+                { word: "umbrella", meaning: "雨伞", phonetic: "/ʌmˈbrelə/", sentence: "Don't forget your umbrella." },
+                { word: "sunglasses", meaning: "太阳镜", phonetic: "/ˈsʌnɡlɑːsɪz/", sentence: "Put on sunglasses on sunny days." },
+                { word: "pretty", meaning: "漂亮的", phonetic: "/ˈprɪti/", sentence: "The dress is pretty." },
+                { word: "expensive", meaning: "昂贵的", phonetic: "/ɪkˈspensɪv/", sentence: "This watch is expensive." },
+                { word: "cheap", meaning: "便宜的", phonetic: "/tʃiːp/", sentence: "The toy is cheap." },
+                { word: "nice", meaning: "好看的", phonetic: "/naɪs/", sentence: "You look nice today." }
+            ]
+        }
+    };
+
+    // 发音函数
+    function speakWord(word) {
+        if (!window.speechSynthesis) return alert("浏览器不支持语音朗读");
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.8;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // 全局变量
+    let currentSemester = "up";
+    let currentUnit = "";
+    let quizWordsList = [];         // 当前单元单词 {word, meaning}
+    let currentQuizIndex = 0;
+    let quizActive = false;          // 练习面板是否打开
+
+    // DOM 元素
+    const unitNavDiv = document.getElementById("unitNav");
+    const vocabGridDiv = document.getElementById("vocabGrid");
+    const exercisePanel = document.getElementById("exercisePanel");
+    const spellInput = document.getElementById("spellInput");
+    const checkBtn = document.getElementById("checkBtn");
+    const nextWordBtn = document.getElementById("nextWordBtn");
+    const feedbackDiv = document.getElementById("feedbackMsg");
+    const chineseHintSpan = document.getElementById("chineseHint");
+    const quizProgressSpan = document.getElementById("quizProgress");
+    const closeQuizBtn = document.getElementById("closeQuizBtn");
+
+    // 辅助函数
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // 获取当前单元所有单词 (用于展示&练习)
+    function getCurrentWordList() {
+        if (!vocabulary[currentSemester] || !vocabulary[currentSemester][currentUnit]) return [];
+        return vocabulary[currentSemester][currentUnit];
+    }
+
+    // 渲染单词卡片
+    function renderVocabGrid() {
+        const words = getCurrentWordList();
+        if (!words.length) {
+            vocabGridDiv.innerHTML = '<div class="empty-msg">✨ 暂无单词，请选择其他单元 ✨</div>';
+            return;
+        }
+        let html = '';
+        words.forEach(item => {
+            html += `
+                <div class="word-card">
+                    <div class="word-header">
+                        <span class="word-en">${escapeHtml(item.word)}</span>
+                        <span class="word-zh">📌 ${escapeHtml(item.meaning)}</span>
+                    </div>
+                    ${item.phonetic ? `<div class="phonetic">🔊 ${escapeHtml(item.phonetic)}</div>` : ''}
+                    <div class="sentence"><i>📖 例句：</i> ${escapeHtml(item.sentence)}</div>
+                    <button class="sound-btn" data-word="${escapeHtml(item.word)}">🎵 标准发音</button>
+                </div>
+            `;
+        });
+        vocabGridDiv.innerHTML = html;
+        document.querySelectorAll('.sound-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const w = btn.getAttribute('data-word');
+                if (w) speakWord(w);
+            });
+        });
+    }
+
+    // 渲染单元导航并添加练习入口
+    function renderUnitNav() {
+        const units = Object.keys(vocabulary[currentSemester]);
+        if (!units.length) return;
+        let navHtml = "";
+        units.forEach(unit => {
+            const activeClass = (currentUnit === unit) ? 'active' : '';
+            navHtml += `<div class="unit-chip ${activeClass}" data-unit="${escapeHtml(unit)}">📖 ${escapeHtml(unit)}</div>`;
+        });
+        unitNavDiv.innerHTML = navHtml;
+        document.querySelectorAll('.unit-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                currentUnit = chip.getAttribute('data-unit');
+                renderUnitNav();
+                renderVocabGrid();
+                // 切换单元后自动关闭练习面板
+                if (quizActive) closeExercisePanel();
+            });
+        });
+        // 在单词网格上方增加练习按钮（每次刷新网格时动态添加操作栏）
+        const actionBar = document.createElement('div');
+        actionBar.className = 'action-bar';
+        actionBar.innerHTML = `<button id="startQuizBtn" class="quiz-btn">📝 单元练习 (拼写闯关)</button>`;
+        const existingBar = document.querySelector('.action-bar');
+        if (existingBar) existingBar.remove();
+        vocabGridDiv.parentNode.insertBefore(actionBar, vocabGridDiv);
+        document.getElementById('startQuizBtn')?.addEventListener('click', () => {
+            startQuizForCurrentUnit();
+        });
+    }
+
+    // 开始练习
+    function startQuizForCurrentUnit() {
+        const words = getCurrentWordList();
+        if (!words.length) {
+            alert("当前单元没有单词，无法练习~");
+            return;
+        }
+        quizWordsList = words.map(w => ({ word: w.word, meaning: w.meaning }));
+        currentQuizIndex = 0;
+        quizActive = true;
+        exercisePanel.style.display = 'block';
+        loadQuizWord();
+        // 重置按钮状态
+        nextWordBtn.disabled = true;
+        spellInput.value = '';
+        feedbackDiv.innerHTML = "🌟 开始挑战！根据中文拼写英文单词～";
+        spellInput.focus();
+    }
+
+    function loadQuizWord() {
+        if (!quizActive || currentQuizIndex >= quizWordsList.length) {
+            // 练习完成
+            feedbackDiv.innerHTML = `🎉🎉 恭喜你完成了「${currentUnit}」所有单词的拼写练习！ 🎉🎉<br> 你太厉害了！坚持复习会更棒哦～`;
+            nextWordBtn.disabled = true;
+            checkBtn.disabled = true;
+            spellInput.disabled = true;
+            chineseHintSpan.innerText = "完成啦 ✨";
+            quizProgressSpan.innerText = `完成 ${quizWordsList.length}/${quizWordsList.length} 词`;
+            return;
+        }
+        const current = quizWordsList[currentQuizIndex];
+        chineseHintSpan.innerText = current.meaning;
+        quizProgressSpan.innerText = `第 ${currentQuizIndex+1} / ${quizWordsList.length} 词`;
+        spellInput.disabled = false;
+        checkBtn.disabled = false;
+        nextWordBtn.disabled = true;    // 需要检查正确后才可下一题
+        spellInput.value = '';
+        feedbackDiv.innerHTML = "📝 输入单词，点击「检查」看看对错吧！";
+        spellInput.focus();
+    }
+
+    // 检查拼写
+    function checkSpelling() {
+        if (!quizActive) return;
+        if (currentQuizIndex >= quizWordsList.length) {
+            feedbackDiv.innerHTML = "练习已经完成！关闭面板后可以选择其他单元～";
+            return;
+        }
+        const userAnswer = spellInput.value.trim().toLowerCase();
+        const correctWord = quizWordsList[currentQuizIndex].word.toLowerCase();
+        if (userAnswer === correctWord) {
+            // 拼写正确：表扬
+            feedbackDiv.innerHTML = `🎉 拼写正确！太棒了！ “${quizWordsList[currentQuizIndex].word}” 完全正确！ 🎉<br>👍 真厉害，继续加油～`;
+            // 正确后启用下一词按钮
+            nextWordBtn.disabled = false;
+            checkBtn.disabled = true;   // 防止重复检查
+        } else {
+            // 拼错：提示“再想想”并且给出正确答案
+            feedbackDiv.innerHTML = `🤔 再想想～ 正确答案是：<strong style="color:#D9792B;">${quizWordsList[currentQuizIndex].word}</strong><br> 💪 记住正确拼写，下一词会更好！`;
+            nextWordBtn.disabled = false;   // 允许继续下一题 (已给出正确答案)
+            checkBtn.disabled = true;
+        }
+    }
+
+    function nextWord() {
+        if (!quizActive) return;
+        if (currentQuizIndex < quizWordsList.length) {
+            currentQuizIndex++;
+            loadQuizWord();
+            // 重置检查按钮可用性
+            checkBtn.disabled = false;
+            nextWordBtn.disabled = true;
+            spellInput.disabled = false;
+        } else {
+            // 已完成
+            loadQuizWord(); // 触发完成界面
+        }
+    }
+
+    function closeExercisePanel() {
+        exercisePanel.style.display = 'none';
+        quizActive = false;
+        spellInput.disabled = false;
+        checkBtn.disabled = false;
+        nextWordBtn.disabled = true;
+        feedbackDiv.innerHTML = "✨ 点击「单元练习」再挑战吧！";
+    }
+
+    // 学期切换
+    function switchSemester(semester) {
+        currentSemester = semester;
+        const units = Object.keys(vocabulary[currentSemester]);
+        currentUnit = units.length ? units[0] : "";
+        renderUnitNav();
+        renderVocabGrid();
+        closeExercisePanel();
+    }
+
+    // 绑定事件与初始化
+    function init() {
+        const semBtns = document.querySelectorAll('.sem-btn');
+        semBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                semBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const sem = btn.getAttribute('data-sem');
+                if (sem === 'up') switchSemester('up');
+                else switchSemester('down');
+            });
+        });
+        switchSemester('up');
+
+        checkBtn.addEventListener('click', checkSpelling);
+        nextWordBtn.addEventListener('click', nextWord);
+        closeQuizBtn.addEventListener('click', closeExercisePanel);
+        // 按回车也可以检查
+        spellInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && checkBtn.disabled === false) checkSpelling();
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
